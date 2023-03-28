@@ -138,7 +138,136 @@ def run(wrapper, cmd, check_log=None):
             # go back to original directory
             os.chdir(origdir)
 
+@skip_if_not_modified
+def test_indelqual():
+    run(
+        "bio/lofreq/indelqual",
+        [
+            "snakemake",
+            "--cores",
+            "1",
+            "--use-conda",
+            "-F",
+            "out/indelqual/a.indel.bam"
 
+        ]
+    )
+
+@skip_if_not_modified
+def test_loglog():
+    run(
+        "bio/bbtools/loglog",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "logs/se/a.log",
+            "logs/pe/a.log",
+        ],
+    )
+
+@skip_if_not_modified
+def test_tadpole():
+    run(
+        "bio/bbtools/tadpole",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "out/correct_se/a.fastq.gz",
+            "out/correct_se/a.discarded.fastq.gz",
+            "out/correct_pe/a.1.fastq",
+            "out/correct_pe/a.2.fastq",
+            "out/correct_pe/a.discarded.fastq",
+            "out/extend_se/a.fastq.gz",
+            "out/extend_se/a.discarded.fastq.gz",
+            "out/extend_pe/a.1.fastq",
+            "out/extend_pe/a.2.fastq",
+            "out/extend_pe/a.discarded.fastq",
+        ],
+    )
+
+@skip_if_not_modified
+def test_seqkit_stats():
+    run(
+        "bio/seqkit/stats",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "out/stats/a.tsv",
+        ],
+    )
+
+@skip_if_not_modified
+def test_seqkit_rmdup():
+    run(
+        "bio/seqkit/rmdup",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "out/rmdup_name/a.fastq.gz",
+        ],
+    )
+    run(
+        "bio/seqkit/rmdup",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "out/rmdup_seq/a.fastq.gz",
+        ],
+    )
+
+@skip_if_not_modified
+def test_seqkit_fx2tab():
+    run(
+        "bio/seqkit/fx2tab",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "out/fx2tab/a.tsv",
+        ],
+    )
+
+@skip_if_not_modified
+def test_seqkit_grep():
+    run(
+        "bio/seqkit/grep",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "out/grep_name/a.fastq.gz",
+        ],
+    )
+    run(
+        "bio/seqkit/grep",
+        [
+            "snakemake",
+            "--cores",
+            "2",
+            "--use-conda",
+            "-F",
+            "out/grep_seq/a.fastq.gz",
+        ],
+    )
 
 @skip_if_not_modified
 def test_sickle_pe():
@@ -414,6 +543,21 @@ def test_salsa2():
     run(
         "bio/salsa2",
         ["snakemake", "--cores", "1", "out/a.agp", "--use-conda", "-F"],
+    )
+
+
+@skip_if_not_modified
+def test_merqury_haploid():
+    run(
+        "bio/merqury",
+        ["snakemake", "--cores", "1", "results/haploid/out.qv", "--use-conda", "-F"],
+    )
+
+@skip_if_not_modified
+def test_merqury_diploid():
+    run(
+        "bio/merqury",
+        ["snakemake", "--cores", "1", "results/diploid/out.qv", "--use-conda", "-F"],
     )
 
 
@@ -3502,7 +3646,7 @@ def test_trinity():
             "snakemake",
             "--cores",
             "1",
-            "trinity_out_dir/Trinity.fasta",
+            "trinity_out_dir.Trinity.fasta",
             "--use-conda",
             "-F",
         ],
@@ -3966,6 +4110,10 @@ def test_gatk_mutect():
     run(
         "bio/gatk/mutect",
         ["snakemake", "--cores", "1", "variant/a.vcf", "--use-conda", "-F"],
+    )
+    run(
+        "bio/gatk/mutect",
+        ["snakemake", "--cores", "1", "variant_complete/a.vcf", "--use-conda", "-F"],
     )
 
 
